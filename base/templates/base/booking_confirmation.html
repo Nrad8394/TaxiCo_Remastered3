@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Booking Confirmation</h1>
+  <p>Your taxi has been booked successfully!</p>
+  <p>Booking details:</p>
+  <ul>
+    <li>Pickup time: {{ booking.pickup_time }}</li>
+    <li>Pickup location: {{ booking.pickup_location }}</li>
+    <li>Dropoff location: {{ booking.dropoff_location }}</li>
+    <li>Taxi:</li>
+    <ul>
+      <li>Latitude: {{ booking.taxi.latitude }}</li>
+      <li>Longitude: {{ booking.taxi.longitude }}</li>
+      <li>Driver name: {{ booking.taxi.driver_name }}</li>
+      <li>Driver phone: {{ booking.taxi.driver_phone }}</li>
+    </ul>
+  </ul>
+{% endblock %}

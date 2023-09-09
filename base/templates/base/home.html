@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+  <h1>Book a Taxi</h1>
+  {% if user_latitude and user_longitude %}
+    {% if closest_taxi %}
+      <p>The closest available taxi is {{ closest_distance }} km away.</p>
+      <form method="GET" action="{% url 'book_taxi' %}">
+        <input type="hidden" name="lat" value="{{ user_latitude }}">
+        <input type="hidden" name="lng" value="{{ user_longitude }}">
+        <button type="submit" class="btn btn-primary">Book this taxi</button>
+      </form>
+    {% else %}
+      <p>Sorry, no taxis are currently available. Please try again later.</p>
+    {% endif %}
+  {% else %}
+    <p>Please allow location access to find the closest available taxi.</p>
+  {% endif %}
+  <div id="map" style="height: 500px;"></div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+  <script>
+    function initMap() {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var userLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: userLocation
+        });
+        var userMarker = new google.maps.Marker({
+          position: userLocation,
+          map: map,
+          title: 'Your location'
+        });
+        {% if closest_taxi %}
+          var taxiLocation = {lat: {{ closest_taxi.latitude }}, lng: {{ closest_taxi.longitude }}};
+          var taxiMarker = new google.maps.Marker({
+            position: taxiLocation,
+            map: map,
+            title: 'Closest taxi'
+          });
+          var taxiDistance = {{ closest_distance }};
+          var taxiInfoWindow = new google.maps.InfoWindow({
+            content: 'The closest available taxi is ' + taxiDistance + ' km away.',
+            position: taxiLocation
+          });
+          taxiInfoWindow.open(map);
+        {% endif %}
+      });
+    }
+  </script>
+{% endblock %}

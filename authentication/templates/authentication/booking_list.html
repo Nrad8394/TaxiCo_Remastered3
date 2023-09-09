@@ -1,0 +1,5 @@
+<a href="{% url 'create'%}">Go Back</a>
+{% for x in tickets %}
+
+<p>ticket {{x.id}}:<a href="{% url 'update' x.id %}" >{{x}}</a> </p>
+{% endfor %}

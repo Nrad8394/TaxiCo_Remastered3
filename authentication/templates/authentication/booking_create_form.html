@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="id_location">Location:</label>
+                {{ form.location }}
+            </div>
+        
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="create">
+            
+        </form>
+        <p><a href="{% url 'list' %}">View ticket list</a>  </p>
+        
+        <!-- include Google Maps API with your API key -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUOh5dOuO1ChgJWkyVjM3KXFtKpzzjyQ&libraries=places"></script>
+
+        <!-- create a script to initialize the Google Places Autocomplete feature -->
+        <script>
+        function initAutocomplete() {
+        var input = document.getElementById('id_location');
+        var options = {
+            types: ['(regions)'],
+            componentRestrictions: {country: 'ke'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        }
+        </script>
+
+        <!-- call the initAutocomplete function when the page loads -->
+        <script>
+        google.maps.event.addDomListener(window, 'load', initAutocomplete);
+        </script>
+
+        <!-- include your Django form field with id='id_location' -->
+        
+    </body>
+</html>

@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Book a Taxi</h1>
+  <p>Please confirm your booking details:</p>
+  <p>Pickup time: {{ request.POST.get('pickup_time') }}</p>
+  <p>Pickup location: {{ request.POST.get('pickup_location') }}</p>
+  <p>Dropoff location: {{ request.POST.get('dropoff_location') }}</p>
+  <p>Closest available taxi:</p>
+  <ul>
+    <li>Latitude: {{ closest_taxi.latitude }}</li>
+    <li>Longitude: {{ closest_taxi.longitude }}</li>
+    <li>Driver name: {{ closest_taxi.driver_name }}</li>
+    <li>Driver phone: {{ closest_taxi.driver_phone }}</li>
+  </ul>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="pickup_time" value="{{ request.POST.get('pickup_time') }}">
+    <input type="hidden" name="pickup_location" value="{{ request.POST.get('pickup_location') }}">
+    <input type="hidden" name="dropoff_location" value="{{ request.POST.get('dropoff_location') }}">
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+    
